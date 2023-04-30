@@ -1,5 +1,6 @@
 'use strict'
 
+const { encrypt } = require('../utils/validate');
 const Accounts = require('./accounts.model');
 
 exports.test = (req, res)=>{
@@ -54,3 +55,15 @@ exports.getAccounts = async(req, res)=>{
         return res.status(500).send({message: 'Error getting accounts'});
     }
 }
+
+exports.getById = async(req, res)=>{
+    try{
+        let { id } = req.params;
+        let account = await Accounts.findOne({_id: id});
+        if(!account) return res.send({message: 'Accout not found'});
+        return res.status(200).send({account});
+    }catch(err){
+        console.error(err);
+        return res.status(500).send({message: 'Error getting'});
+    }
+};
