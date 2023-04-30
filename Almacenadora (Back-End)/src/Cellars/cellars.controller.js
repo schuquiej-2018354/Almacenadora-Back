@@ -103,10 +103,12 @@ exports.getByPrice = async (req, res) => {
 
 exports.uploadImage = async (req, res) => {
     try {
-        const cellarId = req.params.id;
-        const alreadyImage = await Product.findOne({ _id: cellarId })
-        let pathFile = './uploads/cellars'
+        /* const cellarId = req.params.id;
+        const alreadyImage = await Cellar.findOne({ _id: cellarId })
+        let pathFile = './upload/cellar/'
+
         if (!req.files.image || !req.files.image.type) return res.status(400).send({ message: 'Havent sent image' })
+        
         if (alreadyImage.image) fs.unlinkSync(`${pathFile}${alreadyImage.image}`)
         const filePath = req.files.image.path
         const fileSplit = filePath.split('\\')
@@ -114,21 +116,44 @@ exports.uploadImage = async (req, res) => {
         const extension = fileName.split('\.')
         const fileExt = extension[1]
         if (
-            fileExt == 'jpeg' ||
             fileExt == 'png' ||
             fileExt == 'jpg' ||
+            fileExt == 'jpeg' ||
             fileExt == 'gif'
         ) {
-            const updatedProduct = await Product.findOneAndUpdate(
-                { _id: productId },
+            const updatedCellar = await Cellar.findOneAndUpdate(
+                { _id: cellarId },
                 { image: fileName },
                 { new: true }
             )
-            if (!updatedProduct) return res.status(404).send({ message: 'Product not found, not updated' })
-            return res.send({ message: 'Uploaded image', updatedProduct })
+            if (!updatedCellar) return res.status(404).send({ message: 'Cellar not found, not updated' })
+            return res.send({ message: 'Uploaded image', updatedCellar })
         }
         fs.unlinkSync(filePath)
-        return res.status(400).send({ message: 'Invalid extension' })
+        return res.status(400).send({ message: 'Invalid extension' }) */
+        const cellarId = req.params.id;
+        const alreadyImage = await Cellar.findOne({ _id: cellarId })
+        let pathFile = './upload/cellar/'
+        if (!req.files.image || !req.files.image.type) return res.status(400).send({ message: 'Havent sent image' })
+        const filePath = req.files.image.path
+        const fileSplit = filePath.split('\\')
+        const fileName = fileSplit[2]
+        const extension = path.extname(fileName).toLowerCase();
+        const allowedExtensions = ['.png', '.jpg', '.jpeg', '.gif'];
+        if (!allowedExtensions.includes(extension)) {
+            fs.unlinkSync(filePath)
+            return res.status(400).send({ message: 'Invalid extension' })
+        }
+        if (alreadyImage.image && extension !== path.extname(alreadyImage.image).toLowerCase()) {
+            fs.unlinkSync(`${pathFile}${alreadyImage.image}`)
+        }
+        const updatedCellar = await Cellar.findOneAndUpdate(
+            { _id: cellarId },
+            { image: fileName },
+            { new: true }
+        )
+        if (!updatedCellar)  return res.status(404).send({ message: 'Cellar not found, not updated' })
+        return res.send({ message: 'Uploaded image', updatedCellar })
     } catch (err) {
         console.error(err);
         return res.status(500).send({ message: 'Error upload image' });
