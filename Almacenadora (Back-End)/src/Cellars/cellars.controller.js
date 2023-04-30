@@ -1,7 +1,7 @@
 'use strict'
 const Cellar = require('./cellars.model');
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+
 
 exports.test = (req, res) => {
     res.send({ message: 'test fuction is running' });
@@ -9,20 +9,10 @@ exports.test = (req, res) => {
 
 exports.Add = async (req, res) => {
     try {
-        const name = req.body.name;
-        const description = req.body.description;
-        const location = req.body.location;
-        const size = req.body.size;
-        const availability = req.body.availability;
+        let data = req.body;
         let cellarExist = await Cellar.findOne({ name: data.name });
         if (cellarExist) return res.send({ message: 'Cellar already exists' });
-        let cellar = new Cellar({
-            name: name,
-            description: description,
-            location: location,
-            size: size,
-            availability: availability
-        });
+        let cellar = new Cellar(data);
         await cellar.save();
         return res.status(201).send({ message: 'Cellar added successfully' });
     } catch (err) {
@@ -98,39 +88,5 @@ exports.getByPrice = async (req, res) => {
     } catch (err) {
         console.error(err);
         return res.status(500).send({ message: 'error getting cellars' });
-    }
-}
-
-exports.uploadImage = async (req, res) => {
-    try {
-        const cellarId = req.params.id;
-        const alreadyImage = await Product.findOne({ _id: cellarId })
-        let pathFile = './uploads/cellars'
-        if (!req.files.image || !req.files.image.type) return res.status(400).send({ message: 'Havent sent image' })
-        if (alreadyImage.image) fs.unlinkSync(`${pathFile}${alreadyImage.image}`)
-        const filePath = req.files.image.path
-        const fileSplit = filePath.split('\\')
-        const fileName = fileSplit[2]
-        const extension = fileName.split('\.')
-        const fileExt = extension[1]
-        if (
-            fileExt == 'jpeg' ||
-            fileExt == 'png' ||
-            fileExt == 'jpg' ||
-            fileExt == 'gif'
-        ) {
-            const updatedProduct = await Product.findOneAndUpdate(
-                { _id: productId },
-                { image: fileName },
-                { new: true }
-            )
-            if (!updatedProduct) return res.status(404).send({ message: 'Product not found, not updated' })
-            return res.send({ message: 'Uploaded image', updatedProduct })
-        }
-        fs.unlinkSync(filePath)
-        return res.status(400).send({ message: 'Invalid extension' })
-    } catch (err) {
-        console.error(err);
-        return res.status(500).send({ message: 'Error upload image' });
     }
 }

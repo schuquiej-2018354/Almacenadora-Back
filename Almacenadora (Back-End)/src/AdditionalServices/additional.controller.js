@@ -42,3 +42,15 @@ exports.getAdditional = async(req, res)=>{
         return res.status(500).send({message: 'Error getting additional services'});
     }
 }
+
+exports.getById = async(req, res)=>{
+    try{
+        let { id } = req.params;
+        let service = await Additional.findOne({_id: id});
+        if(!service) return res.send({message: 'Service not found'});
+        return res.status(200).send({service});
+    }catch(err){
+        console.error(err);
+        return res.status(500).send({message: 'Error getting'});
+    }
+}

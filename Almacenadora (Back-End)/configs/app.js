@@ -8,9 +8,11 @@ const app = express();
 
 const port = process.env.PORT || 3200;
 
-const cellarRoutes = require('../src/Cellars/cellars.routes');
+const cellarRoutes = require('../src/Cellars/cellars.routes')
 const userRoutes = require('../src/User/user.routes');
 const clientRoutes = require('../src/Clients/client.routes');
+const accountRoutes = require('../src/Accounts/accounts.routes');
+const additionalServicesRoutes = require('../src/AdditionalServices/additional.routes');
 
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
@@ -20,7 +22,9 @@ app.use(morgan('dev'));
 
 app.use('/cellar', cellarRoutes);
 app.use('/user', userRoutes);
-app.use('/client', clientRoutes);
+app.use('/client', clientRoutes)
+app.use('/account', accountRoutes);
+app.use('/service', additionalServicesRoutes);
 
 
 exports.initServer = ()=>{

@@ -67,3 +67,15 @@ exports.login = async (req, res) => {
         return res.status(404).send({ message: 'Error not logged' })
     }
 }
+
+exports.getById = async(req, res)=>{
+    try{
+        let { id } = req.params;
+        let user = await User.findOne({_id: id})
+        if(!user) return res.send({message: 'User not found'});
+        return res.status(200).send({user});
+    }catch(err){
+        console.error(err);
+        return res.status(500).send({message: 'Error getting'});
+    }
+}

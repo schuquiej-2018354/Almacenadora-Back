@@ -80,3 +80,15 @@ exports.getByCellarAndClient = async(req, res)=>{
         return res.status(500).send({message: 'Error getting'});
     } 
 }
+
+exports.getById  = async(req, res)=>{
+    try{
+        let { id } = req.params;
+        let lease = await Lease.findOne({_id: id});
+        if(!lease) return res.send({message: 'Lease not found'})
+        return res.status(200).send({lease});
+    }catch(err){
+        console.error(err);
+        return res.status(500).send({message: 'Error getting'})
+    }
+}
