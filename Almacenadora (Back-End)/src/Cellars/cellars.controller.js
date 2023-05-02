@@ -1,7 +1,7 @@
 'use strict'
 const Cellar = require('./cellars.model');
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+
 
 exports.test = (req, res) => {
     res.send({ message: 'test fuction is running' });
@@ -9,20 +9,10 @@ exports.test = (req, res) => {
 
 exports.Add = async (req, res) => {
     try {
-        const name = req.body.name;
-        const description = req.body.description;
-        const location = req.body.location;
-        const size = req.body.size;
-        const availability = req.body.availability;
+        let data = req.body;
         let cellarExist = await Cellar.findOne({ name: data.name });
         if (cellarExist) return res.send({ message: 'Cellar already exists' });
-        let cellar = new Cellar({
-            name: name,
-            description: description,
-            location: location,
-            size: size,
-            availability: availability
-        });
+        let cellar = new Cellar(data);
         await cellar.save();
         return res.status(201).send({ message: 'Cellar added successfully' });
     } catch (err) {

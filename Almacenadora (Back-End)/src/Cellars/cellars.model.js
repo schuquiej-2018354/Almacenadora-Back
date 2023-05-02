@@ -3,13 +3,13 @@
 const mongoose = require('mongoose');
 
 const cellarModel = mongoose.Schema({
-    image: {
+    photo: {
         type: String
     },
     name: {
         type: String,
-        required: true
-    },
+            required: true
+        },
     description: {
         type: String,
     },
@@ -24,7 +24,7 @@ const cellarModel = mongoose.Schema({
     },
     price: {
         type: Number
-    }
+    },
 }, {
     versionKey: false
 });

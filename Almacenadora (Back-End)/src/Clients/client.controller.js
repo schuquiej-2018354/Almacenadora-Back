@@ -74,3 +74,16 @@ exports.getByIdentification = async(req, res)=>{
         return res.status(500).send({message: 'Error getting'});
     }
 };
+
+exports.getById = async(req, res)=>{
+    try{
+        let { id } = req.params;
+        console.log(id);
+        let client = await Client.findOne({_id: id});
+        if(!client) return res.send({message: 'Client not found'});
+        return res.status(200).send({client});
+    }catch(err){
+        console.error(err);
+        return res.status(500).send({message: 'Error getting'});
+    }
+}
