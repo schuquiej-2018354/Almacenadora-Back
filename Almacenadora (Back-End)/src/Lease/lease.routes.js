@@ -10,6 +10,7 @@ api.put('/update/:id', leasecontroller.update);
 api.delete('/delete/:id', leasecontroller.delete);
 api.get('/get', leasecontroller.get);
 api.post('/getByCellarAndClient', leasecontroller.getByCellarAndClient);
+api.get('/getById', leasecontroller.getById);
 
 
 module.exports = api;
