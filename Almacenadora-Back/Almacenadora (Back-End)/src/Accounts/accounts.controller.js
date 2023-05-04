@@ -11,7 +11,7 @@ exports.addAccounts = async(req, res)=>{
     try{
         let data = req.body;
         data.password = await encrypt(data.password);
-        data.role = 'worker';
+        data.role = 'client';
         let account = new Accounts(data);
         await account.save();
         return res.send({message: 'Account created sucessfully'});

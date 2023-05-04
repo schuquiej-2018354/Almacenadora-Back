@@ -3,25 +3,23 @@
 const mongoose = require('mongoose');
 
 const leaseSchema = mongoose.Schema({
-    cellar:{
+    cellar: {
         type: mongoose.Schema.Types.ObjectId, ref: 'Cellar',
         required: true
     },
-    client:{
+    client: {
         type: mongoose.Schema.Types.ObjectId, ref: 'Client',
         required: true
     },
-    services:[
-        {
-            type: mongoose.Schema.Types.ObjectId, ref: 'service',
-            required: true
-        }
-    ],
+    services: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Additional',
+        required: true
+    },
     amount: {
         type: Number,
         required: true
     }
-},{
+}, {
     versionKey: false
 });
 

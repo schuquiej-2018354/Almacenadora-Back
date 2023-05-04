@@ -1,5 +1,6 @@
 'use strict'
 const Cellar = require('./cellars.model');
+const Lease = require('../Lease/lease.model')
 const fs = require('fs');
 
 
@@ -37,6 +38,8 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
         let cellarId = req.params.id;
+        let cellarInLease = await Lease.findOne({ cellar: cellarId });
+        if (cellarInLease) return res.send({ message: 'You cannot delete this cellar because it is leased' });
         let deleteCeller = await Cellar.findOneAndRemove({ _id: cellarId });
         if (!deleteCeller) return res.send({ message: 'Cellar not found and not deleted' });
         return res.status(200).send({ message: `Cellar with name ${deleteCeller.name} deteled successfully` });
@@ -59,8 +62,8 @@ exports.getById = async (req, res) => {
 
 exports.getCellars = async (req, res) => {
     try {
-        let cellars = await Cellar.find();
-        return res.status(200).send({ cellars });
+        let cellar = await Cellar.find();
+        return res.status(200).send({ cellar });
     } catch (err) {
         console.error(err);
         return res.status(500).send({ message: 'Error getting cellars' });
@@ -142,7 +145,7 @@ exports.uploadImage = async (req, res) => {
             { image: fileName },
             { new: true }
         )
-        if (!updatedCellar)  return res.status(404).send({ message: 'Cellar not found, not updated' })
+        if (!updatedCellar) return res.status(404).send({ message: 'Cellar not found, not updated' })
         return res.send({ message: 'Uploaded image', updatedCellar })
     } catch (err) {
         console.error(err);
