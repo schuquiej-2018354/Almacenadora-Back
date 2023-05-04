@@ -58,7 +58,7 @@ exports.delete = async(req, res)=>{
 
 exports.get = async(req, res)=>{
     try{
-        let leases = await Lease.find();
+        let leases = await Lease.find().populate('cellar').populate('client');
         return res.status(200).send({leases});
     }catch(e){
         console.error(e);
