@@ -70,12 +70,21 @@ exports.login = async (req, res) => {
 
 exports.getById = async(req, res)=>{
     try{
-        let { id } = req.params;
+        let id  = req.user.sub;
         let user = await User.findOne({_id: id})
         if(!user) return res.send({message: 'User not found'});
         return res.status(200).send({user});
     }catch(err){
         console.error(err);
         return res.status(500).send({message: 'Error getting'});
+    }
+}
+
+exports.getUsers = async(req, res)=>{
+    try{
+        const user = await User.find();
+        return res.status(200).send({user});
+    }catch(err){
+        console.log(err);
     }
 }

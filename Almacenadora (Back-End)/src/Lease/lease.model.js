@@ -3,17 +3,17 @@
 const mongoose = require('mongoose');
 
 const leaseSchema = mongoose.Schema({
-    cellar:{
+    cellar: {
         type: mongoose.Schema.Types.ObjectId, ref: 'Cellar',
         required: true
     },
-    client:{
+    client: {
         type: mongoose.Schema.Types.ObjectId, ref: 'Client',
         required: true
     },
-    services:[
+    services: [
         {
-            type: mongoose.Schema.Types.ObjectId, ref: 'service',
+            type: mongoose.Schema.Types.ObjectId, ref: 'Additional',
             required: true
         }
     ],
@@ -21,7 +21,7 @@ const leaseSchema = mongoose.Schema({
         type: Number,
         required: true
     }
-},{
+}, {
     versionKey: false
 });
 
