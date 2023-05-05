@@ -7,6 +7,7 @@ const api = express.Router();
 
 
 api.get('/test', userController.test);
-api.post('/login', userController.login)
+api.get('/getById/:id', userController.getById);
+api.get('/getUsers', userController.getUsers);
 
 module.exports = api;

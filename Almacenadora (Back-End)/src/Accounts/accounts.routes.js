@@ -3,6 +3,7 @@ const api = express.Router();
 const accountsController = require('./accounts.controller');
 
 api.get('/', accountsController.test);
+api.post('/login', accountsController.login)
 api.post('/addAccount', accountsController.addAccounts);
 api.put('/updateAccount/:id', accountsController.updateAccount);
 api.delete('/deleteAccount/:id', accountsController.deleteAccount);

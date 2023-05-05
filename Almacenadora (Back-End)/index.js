@@ -3,7 +3,7 @@
 require('dotenv').config();
 const mongoConfig = require('./configs/mongo');
 const app = require('./configs/app');
-const adminDefault = require('./src/User/user.controller')
+const adminDefault = require('./src/Accounts/accounts.controller')
 
 mongoConfig.connect();
 app.initServer();
