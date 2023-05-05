@@ -8,8 +8,8 @@ const cellarModel = mongoose.Schema({
     },
     name: {
         type: String,
-            required: true
-        },
+        required: true
+    },
     description: {
         type: String,
     },
@@ -21,6 +21,7 @@ const cellarModel = mongoose.Schema({
     },
     availability: {
         type: String
+        
     },
     price: {
         type: Number
